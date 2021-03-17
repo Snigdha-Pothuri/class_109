@@ -2,11 +2,13 @@ import random
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
 import statistics 
+import pandas as pd
 df=pd.read_csv("StudentsPerformance.csv")
-mean=statistics.mean(df)
-median=statistics.median(df)
-mode=statistics.mode(df)
-standard_deviation=statistics.stdev(df)
+data = df["reading score"].tolist()
+mean=statistics.mean(data)
+median=statistics.median(data)
+mode=statistics.mode(data)
+standard_deviation=statistics.stdev(data)
 print(mean)
 print(median)
 print(mode)
@@ -14,7 +16,7 @@ print(standard_deviation)
 first_std_start,first_std_end=mean-standard_deviation,mean+standard_deviation
 second_std_start,second_std_end=mean-(2*standard_deviation),mean+(2*standard_deviation)
 third_std_start,third_std_end=mean-(3*standard_deviation),mean+(3*standard_deviation)
-figure=ff.create_distplot([dice_result],["result"],show_hist=False)
+figure=ff.create_distplot([data],["result"],show_hist=False)
 figure.add_trace(go.Scatter(x=[mean,mean],y=[0,0.17],mode="lines",name="mean"))
 figure.add_trace(go.Scatter(x=[first_std_start,first_std_start],y=[0,0.17],mode="lines",name="first_standard_deviation start"))
 figure.add_trace(go.Scatter(x=[first_std_end,first_std_end],y=[0,0.17],mode="lines",name="first std end"))
@@ -23,9 +25,9 @@ figure.add_trace(go.Scatter(x=[second_std_end,second_std_end],y=[0,0.17],mode="l
 figure.add_trace(go.Scatter(x=[third_std_start,third_std_start],y=[0,0.17],mode="lines",name="third_std_start"))
 figure.add_trace(go.Scatter(x=[third_std_end,third_std_end],y=[0,0.17],mode="lines",name="third_std_end"))
 figure.show()
-data_firststd=[result for result in df if result>first_std_start and result<first_std_end]
-print("Percentage of data within first standard deviation",len(data_firststd)*100/len(df))
-data_secondstd=[result for result in df if result>second_std_start and result<second_std_end]
-print("Percentage of data within second standard deviation",len(data_secondstd)*100/len(df))
-data_thirdstd=[result for result in df if result>third_std_start and result<third_std_end]
-print("Percentage of data within third standard deviation",len(data_thirdstd)*100/len(df))
+data_firststd=[result for result in data if result>first_std_start and result<first_std_end]
+print("Percentage of data within first standard deviation",len(data_firststd)*100/len(data))
+data_secondstd=[result for result in data if result>second_std_start and result<second_std_end]
+print("Percentage of data within second standard deviation",len(data_secondstd)*100/len(data))
+data_thirdstd=[result for result in data if result>third_std_start and result<third_std_end]
+print("Percentage of data within third standard deviation",len(data_thirdstd)*100/len(data))
